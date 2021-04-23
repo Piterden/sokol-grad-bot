@@ -2,7 +2,7 @@ require('dotenv').config()
 const knex = require('knex')
 const { Telegraf, session } = require('telegraf')
 const knexConfig = require('./knexfile')
-const { BOT_USER, BOT_TOKEN } = process.env
+const { BOT_USER, BOT_TOKEN, NEWS_GROUP } = process.env
 
 const bot = new Telegraf(BOT_TOKEN, { username: BOT_USER })
 
@@ -77,7 +77,7 @@ bot.on('new_chat_members', async (ctx) => {
 🔑⚠️Просим Вам зарегестрироваться в системе для определения вашего статуса в группе. Команда /reg🔑⚠️
 
 📣 Новостная группа 📣
-https://t.me/joinchat/NZdgFLYcgGEwOGEy`).catch(console.error)
+${NEWS_GROUP}`).catch(console.error)
 
     setTimeout(() => {
       ctx.deleteMessage(message.message_id).catch(console.error)
