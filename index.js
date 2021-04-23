@@ -113,7 +113,7 @@ bot.command('reg', async (ctx) => {
       parse_mode: 'Markdown',
       reply_markup: {
         inline_keyboard: [
-          [{ text: 'Удалить', callback_data: 'delete' }],
+          [{ text: 'Перерегистрироваться', callback_data: 'delete' }],
           [{ text: 'Отмена', callback_data: 'cancel' }],
         ],
       },
