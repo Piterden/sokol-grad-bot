@@ -21,9 +21,6 @@ const defaultParams = {
   pool: {
     min: 2,
     max: 10,
-    afterCreate: (conn, cb) => {
-      conn.run('PRAGMA foreign_keys = ON', cb)
-    },
   },
   migrations: {
     tableName: DB_MIGRATIONS_TABLE,
