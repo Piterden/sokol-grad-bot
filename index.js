@@ -56,6 +56,18 @@ const userLink = ({
   ? `@${username.replace(/([_*~])/g, '\\$1')}`
   : `[${firstName || lastName}](tg://user?id=${id})`
 
+const waitForIdle = (ctx) => new Promise((resolve, reject) => {
+  if (ctx.session.regIdleTimeout) {
+    clearTimeout(ctx.session.regIdleTimeout)
+  }
+  ctx.session.regIdleTimeout = setTimeout(() => {
+    ctx.deleteMessage().then(() => {
+      ctx.session.reg = null
+      resolve()
+    }).catch(reject)
+  }, 600000)
+})
+
 bot.use(async (ctx, next) => {
   await saveUserToDb(ctx.db, ctx.from)
   await next()
@@ -132,6 +144,7 @@ bot.command('reg', async (ctx) => {
   }
 
   ctx.session.reg = message.message_id
+  waitForIdle(ctx).catch(console.error)
 })
 
 bot.action('delete', async (ctx) => {
@@ -151,6 +164,7 @@ bot.action('delete', async (ctx) => {
   }).catch(console.error)
 
   ctx.session.reg = message.message_id
+  waitForIdle().catch(console.error)
 })
 
 bot.action('cancel', async (ctx) => {
@@ -181,6 +195,7 @@ bot.action('begin', async (ctx) => {
       ],
     },
   }).catch(console.error)
+  waitForIdle(ctx).catch(console.error)
 })
 
 bot.action('reg', async (ctx) => {
@@ -214,6 +229,7 @@ bot.action('reg', async (ctx) => {
       ],
     },
   }).catch(console.error)
+  waitForIdle(ctx).catch(console.error)
 })
 
 bot.action(/^liter(\d)$/, async (ctx) => {
@@ -247,6 +263,7 @@ bot.action(/^liter(\d)$/, async (ctx) => {
       ],
     },
   }).catch(console.error)
+  waitForIdle(ctx).catch(console.error)
 })
 
 bot.action(/^liter(\d),entrance(\d)$/, async (ctx) => {
@@ -291,6 +308,7 @@ bot.action(/^liter(\d),entrance(\d)$/, async (ctx) => {
       ],
     },
   }).catch(console.error)
+  waitForIdle(ctx).catch(console.error)
 })
 
 bot.action(/^liter(\d),entrance(\d),floor(\d+)$/, async (ctx) => {
@@ -344,6 +362,7 @@ bot.action(/^liter(\d),entrance(\d),floor(\d+)$/, async (ctx) => {
       ],
     },
   }).catch(console.error)
+  waitForIdle(ctx).catch(console.error)
 })
 
 bot.action(/^register(\d+)$/, async (ctx) => {
